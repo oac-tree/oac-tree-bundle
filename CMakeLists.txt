@@ -28,6 +28,8 @@ ExternalProject_Add(sup-di
     -DCMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX}
     -DCMAKE_CXX_COMPILER=${CMAKE_CXX_COMPILER}
     -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
+  DEPENDS
+    sup-utils
 )
 
 ExternalProject_Add(sup-protocol

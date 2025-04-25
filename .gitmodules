@@ -1,0 +1,9 @@
+[submodule "modules/oac-tree"]
+	path = modules/oac-tree
+	url = https://github.com/oac-tree/oac-tree.git
+[submodule "modules/sup-dto"]
+	path = modules/sup-dto
+	url = https://github.com/oac-tree/sup-dto.git
+[submodule "modules/sup-utils"]
+	path = modules/sup-utils
+	url = https://github.com/oac-tree/sup-utils.git

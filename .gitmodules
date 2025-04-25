@@ -31,3 +31,15 @@
 [submodule "modules/oac-tree-mathexpr"]
 	path = modules/oac-tree-mathexpr
 	url = https://github.com/oac-tree/oac-tree-mathexpr.git
+[submodule "modules/sup-gui-extra"]
+	path = modules/sup-gui-extra
+	url = https://github.com/oac-tree/sup-gui-extra.git
+[submodule "modules/sup-gui-core"]
+	path = modules/sup-gui-core
+	url = https://github.com/oac-tree/sup-gui-core.git
+[submodule "modules/sup-mvvm"]
+	path = modules/sup-mvvm
+	url = https://github.com/oac-tree/sup-mvvm.git
+[submodule "modules/oac-tree-gui"]
+	path = modules/oac-tree-gui
+	url = https://github.com/oac-tree/oac-tree-gui.git

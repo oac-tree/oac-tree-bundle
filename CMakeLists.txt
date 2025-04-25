@@ -121,3 +121,48 @@ ExternalProject_Add(oac-tree-mathexpr
     oac-tree
     sup-mathexpr
 )
+
+ExternalProject_Add(sup-gui-extra
+  SOURCE_DIR
+    ${CMAKE_CURRENT_SOURCE_DIR}/modules/sup-gui-extra
+  CMAKE_ARGS
+    -DCMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX}
+    -DCMAKE_CXX_COMPILER=${CMAKE_CXX_COMPILER}
+    -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
+)
+
+ExternalProject_Add(sup-mvvm
+  SOURCE_DIR
+    ${CMAKE_CURRENT_SOURCE_DIR}/modules/sup-mvvm
+  CMAKE_ARGS
+    -DCMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX}
+    -DCMAKE_CXX_COMPILER=${CMAKE_CXX_COMPILER}
+    -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
+)
+
+ExternalProject_Add(sup-gui-core
+  SOURCE_DIR
+    ${CMAKE_CURRENT_SOURCE_DIR}/modules/sup-gui-core
+  CMAKE_ARGS
+    -DCMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX}
+    -DCMAKE_CXX_COMPILER=${CMAKE_CXX_COMPILER}
+    -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
+  DEPENDS
+    sup-gui-extra
+    sup-mvvm
+    sup-dto
+)
+
+ExternalProject_Add(oac-tree-gui
+  SOURCE_DIR
+    ${CMAKE_CURRENT_SOURCE_DIR}/modules/oac-tree-gui
+  CMAKE_ARGS
+    -DCMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX}
+    -DCMAKE_CXX_COMPILER=${CMAKE_CXX_COMPILER}
+    -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
+  DEPENDS
+    oac-tree
+    oac-tree-server
+    sup-gui-core
+    sup-epics
+)

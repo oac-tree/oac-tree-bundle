@@ -21,6 +21,51 @@ ExternalProject_Add(sup-utils
     -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
 )
 
+ExternalProject_Add(sup-di
+  SOURCE_DIR
+    ${CMAKE_CURRENT_SOURCE_DIR}/modules/sup-di
+  CMAKE_ARGS
+    -DCMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX}
+    -DCMAKE_CXX_COMPILER=${CMAKE_CXX_COMPILER}
+    -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
+)
+
+ExternalProject_Add(sup-protocol
+  SOURCE_DIR
+    ${CMAKE_CURRENT_SOURCE_DIR}/modules/sup-protocol
+  CMAKE_ARGS
+    -DCMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX}
+    -DCMAKE_CXX_COMPILER=${CMAKE_CXX_COMPILER}
+    -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
+  DEPENDS
+    sup-dto
+    sup-utils
+    sup-di
+)
+
+ExternalProject_Add(sup-epics
+  SOURCE_DIR
+    ${CMAKE_CURRENT_SOURCE_DIR}/modules/sup-epics
+  CMAKE_ARGS
+    -DCMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX}
+    -DCMAKE_CXX_COMPILER=${CMAKE_CXX_COMPILER}
+    -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
+  DEPENDS
+    sup-dto
+    sup-utils
+    sup-di
+    sup-protocol
+)
+
+ExternalProject_Add(sup-mathexpr
+  SOURCE_DIR
+    ${CMAKE_CURRENT_SOURCE_DIR}/modules/sup-mathexpr
+  CMAKE_ARGS
+    -DCMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX}
+    -DCMAKE_CXX_COMPILER=${CMAKE_CXX_COMPILER}
+    -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
+)
+
 ExternalProject_Add(oac-tree
   SOURCE_DIR
     ${CMAKE_CURRENT_SOURCE_DIR}/modules/oac-tree

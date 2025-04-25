@@ -7,3 +7,15 @@
 [submodule "modules/sup-utils"]
 	path = modules/sup-utils
 	url = https://github.com/oac-tree/sup-utils.git
+[submodule "modules/sup-di"]
+	path = modules/sup-di
+	url = https://github.com/oac-tree/sup-di.git
+[submodule "modules/sup-protocol"]
+	path = modules/sup-protocol
+	url = https://github.com/oac-tree/sup-protocol.git
+[submodule "modules/sup-epics"]
+	path = modules/sup-epics
+	url = https://github.com/oac-tree/sup-epics.git
+[submodule "modules/sup-mathexpr"]
+	path = modules/sup-mathexpr
+	url = https://github.com/oac-tree/sup-mathexpr.git

@@ -1,0 +1,34 @@
+cmake_minimum_required(VERSION 3.13...3.31)
+project(oac-tree-bundle VERSION 1.0.0)
+
+include(ExternalProject)
+
+ExternalProject_Add(sup-dto
+  SOURCE_DIR
+    ${CMAKE_CURRENT_SOURCE_DIR}/modules/sup-dto
+  CMAKE_ARGS
+    -DCMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX}
+    -DCMAKE_CXX_COMPILER=${CMAKE_CXX_COMPILER}
+    -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
+)
+
+ExternalProject_Add(sup-utils
+  SOURCE_DIR
+    ${CMAKE_CURRENT_SOURCE_DIR}/modules/sup-utils
+  CMAKE_ARGS
+    -DCMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX}
+    -DCMAKE_CXX_COMPILER=${CMAKE_CXX_COMPILER}
+    -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
+)
+
+ExternalProject_Add(oac-tree
+  SOURCE_DIR
+    ${CMAKE_CURRENT_SOURCE_DIR}/modules/oac-tree
+  CMAKE_ARGS
+    -DCMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX}
+    -DCMAKE_CXX_COMPILER=${CMAKE_CXX_COMPILER}
+    -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
+  DEPENDS
+    sup-dto
+    sup-utils
+)

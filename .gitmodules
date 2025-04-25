@@ -19,3 +19,15 @@
 [submodule "modules/sup-mathexpr"]
 	path = modules/sup-mathexpr
 	url = https://github.com/oac-tree/sup-mathexpr.git
+[submodule "modules/oac-tree-server"]
+	path = modules/oac-tree-server
+	url = https://github.com/oac-tree/oac-tree-server.git
+[submodule "modules/oac-tree-control"]
+	path = modules/oac-tree-control
+	url = https://github.com/oac-tree/oac-tree-control.git
+[submodule "modules/oac-tree-epics"]
+	path = modules/oac-tree-epics
+	url = https://github.com/oac-tree/oac-tree-epics.git
+[submodule "modules/oac-tree-mathexpr"]
+	path = modules/oac-tree-mathexpr
+	url = https://github.com/oac-tree/oac-tree-mathexpr.git

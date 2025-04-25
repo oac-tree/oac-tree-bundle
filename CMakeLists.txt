@@ -51,9 +51,6 @@ ExternalProject_Add(sup-epics
     -DCMAKE_CXX_COMPILER=${CMAKE_CXX_COMPILER}
     -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
   DEPENDS
-    sup-dto
-    sup-utils
-    sup-di
     sup-protocol
 )
 
@@ -76,4 +73,51 @@ ExternalProject_Add(oac-tree
   DEPENDS
     sup-dto
     sup-utils
+)
+
+ExternalProject_Add(oac-tree-server
+  SOURCE_DIR
+    ${CMAKE_CURRENT_SOURCE_DIR}/modules/oac-tree-server
+  CMAKE_ARGS
+    -DCMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX}
+    -DCMAKE_CXX_COMPILER=${CMAKE_CXX_COMPILER}
+    -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
+  DEPENDS
+    oac-tree
+    sup-epics
+)
+
+ExternalProject_Add(oac-tree-control
+  SOURCE_DIR
+    ${CMAKE_CURRENT_SOURCE_DIR}/modules/oac-tree-control
+  CMAKE_ARGS
+    -DCMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX}
+    -DCMAKE_CXX_COMPILER=${CMAKE_CXX_COMPILER}
+    -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
+  DEPENDS
+    oac-tree
+)
+
+ExternalProject_Add(oac-tree-epics
+  SOURCE_DIR
+    ${CMAKE_CURRENT_SOURCE_DIR}/modules/oac-tree-epics
+  CMAKE_ARGS
+    -DCMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX}
+    -DCMAKE_CXX_COMPILER=${CMAKE_CXX_COMPILER}
+    -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
+  DEPENDS
+    oac-tree
+    sup-epics
+)
+
+ExternalProject_Add(oac-tree-mathexpr
+  SOURCE_DIR
+    ${CMAKE_CURRENT_SOURCE_DIR}/modules/oac-tree-mathexpr
+  CMAKE_ARGS
+    -DCMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX}
+    -DCMAKE_CXX_COMPILER=${CMAKE_CXX_COMPILER}
+    -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
+  DEPENDS
+    oac-tree
+    sup-mathexpr
 )

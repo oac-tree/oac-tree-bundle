@@ -1,170 +1,46 @@
 cmake_minimum_required(VERSION 3.13...3.31)
 project(oac-tree-bundle VERSION 1.0.0)
 
-include(ExternalProject)
+set(CMAKE_MODULE_PATH ${CMAKE_CURRENT_LIST_DIR}/cmake/module)
 
-ExternalProject_Add(sup-dto
-  SOURCE_DIR
-    ${CMAKE_CURRENT_SOURCE_DIR}/modules/sup-dto
-  CMAKE_ARGS
-    -DCMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX}
-    -DCMAKE_CXX_COMPILER=${CMAKE_CXX_COMPILER}
-    -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
-)
+include(cmake_functions)
 
-ExternalProject_Add(sup-utils
-  SOURCE_DIR
-    ${CMAKE_CURRENT_SOURCE_DIR}/modules/sup-utils
-  CMAKE_ARGS
-    -DCMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX}
-    -DCMAKE_CXX_COMPILER=${CMAKE_CXX_COMPILER}
-    -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
-)
+add_local_module(sup-dto)
 
-ExternalProject_Add(sup-di
-  SOURCE_DIR
-    ${CMAKE_CURRENT_SOURCE_DIR}/modules/sup-di
-  CMAKE_ARGS
-    -DCMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX}
-    -DCMAKE_CXX_COMPILER=${CMAKE_CXX_COMPILER}
-    -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
-  DEPENDS
-    sup-utils
-)
+add_local_module(sup-utils)
 
-ExternalProject_Add(sup-protocol
-  SOURCE_DIR
-    ${CMAKE_CURRENT_SOURCE_DIR}/modules/sup-protocol
-  CMAKE_ARGS
-    -DCMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX}
-    -DCMAKE_CXX_COMPILER=${CMAKE_CXX_COMPILER}
-    -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
-  DEPENDS
-    sup-dto
-    sup-utils
-    sup-di
-)
+add_local_module(sup-di
+  DEPENDS sup-utils)
 
-ExternalProject_Add(sup-epics
-  SOURCE_DIR
-    ${CMAKE_CURRENT_SOURCE_DIR}/modules/sup-epics
-  CMAKE_ARGS
-    -DCMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX}
-    -DCMAKE_CXX_COMPILER=${CMAKE_CXX_COMPILER}
-    -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
-  DEPENDS
-    sup-protocol
-)
+add_local_module(sup-protocol
+  DEPENDS sup-dto sup-utils sup-di)
 
-ExternalProject_Add(sup-mathexpr
-  SOURCE_DIR
-    ${CMAKE_CURRENT_SOURCE_DIR}/modules/sup-mathexpr
-  CMAKE_ARGS
-    -DCMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX}
-    -DCMAKE_CXX_COMPILER=${CMAKE_CXX_COMPILER}
-    -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
-)
+add_local_module(sup-epics
+  DEPENDS sup-protocol)
 
-ExternalProject_Add(oac-tree
-  SOURCE_DIR
-    ${CMAKE_CURRENT_SOURCE_DIR}/modules/oac-tree
-  CMAKE_ARGS
-    -DCMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX}
-    -DCMAKE_CXX_COMPILER=${CMAKE_CXX_COMPILER}
-    -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
-  DEPENDS
-    sup-dto
-    sup-utils
-)
+add_local_module(sup-mathexpr)
 
-ExternalProject_Add(oac-tree-server
-  SOURCE_DIR
-    ${CMAKE_CURRENT_SOURCE_DIR}/modules/oac-tree-server
-  CMAKE_ARGS
-    -DCMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX}
-    -DCMAKE_CXX_COMPILER=${CMAKE_CXX_COMPILER}
-    -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
-  DEPENDS
-    oac-tree
-    sup-epics
-)
+add_local_module(oac-tree
+  DEPENDS sup-dto sup-utils)
 
-ExternalProject_Add(oac-tree-control
-  SOURCE_DIR
-    ${CMAKE_CURRENT_SOURCE_DIR}/modules/oac-tree-control
-  CMAKE_ARGS
-    -DCMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX}
-    -DCMAKE_CXX_COMPILER=${CMAKE_CXX_COMPILER}
-    -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
-  DEPENDS
-    oac-tree
-)
+add_local_module(oac-tree-server
+  DEPENDS oac-tree sup-epics)
 
-ExternalProject_Add(oac-tree-epics
-  SOURCE_DIR
-    ${CMAKE_CURRENT_SOURCE_DIR}/modules/oac-tree-epics
-  CMAKE_ARGS
-    -DCMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX}
-    -DCMAKE_CXX_COMPILER=${CMAKE_CXX_COMPILER}
-    -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
-  DEPENDS
-    oac-tree
-    sup-epics
-)
+add_local_module(oac-tree-control
+  DEPENDS oac-tree)
 
-ExternalProject_Add(oac-tree-mathexpr
-  SOURCE_DIR
-    ${CMAKE_CURRENT_SOURCE_DIR}/modules/oac-tree-mathexpr
-  CMAKE_ARGS
-    -DCMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX}
-    -DCMAKE_CXX_COMPILER=${CMAKE_CXX_COMPILER}
-    -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
-  DEPENDS
-    oac-tree
-    sup-mathexpr
-)
+add_local_module(oac-tree-epics
+  DEPENDS oac-tree sup-epics)
 
-ExternalProject_Add(sup-gui-extra
-  SOURCE_DIR
-    ${CMAKE_CURRENT_SOURCE_DIR}/modules/sup-gui-extra
-  CMAKE_ARGS
-    -DCMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX}
-    -DCMAKE_CXX_COMPILER=${CMAKE_CXX_COMPILER}
-    -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
-)
+add_local_module(oac-tree-mathexpr
+  DEPENDS oac-tree sup-mathexpr)
 
-ExternalProject_Add(sup-mvvm
-  SOURCE_DIR
-    ${CMAKE_CURRENT_SOURCE_DIR}/modules/sup-mvvm
-  CMAKE_ARGS
-    -DCMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX}
-    -DCMAKE_CXX_COMPILER=${CMAKE_CXX_COMPILER}
-    -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
-)
+add_local_module(sup-gui-extra)
 
-ExternalProject_Add(sup-gui-core
-  SOURCE_DIR
-    ${CMAKE_CURRENT_SOURCE_DIR}/modules/sup-gui-core
-  CMAKE_ARGS
-    -DCMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX}
-    -DCMAKE_CXX_COMPILER=${CMAKE_CXX_COMPILER}
-    -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
-  DEPENDS
-    sup-gui-extra
-    sup-mvvm
-    sup-dto
-)
+add_local_module(sup-mvvm)
 
-ExternalProject_Add(oac-tree-gui
-  SOURCE_DIR
-    ${CMAKE_CURRENT_SOURCE_DIR}/modules/oac-tree-gui
-  CMAKE_ARGS
-    -DCMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX}
-    -DCMAKE_CXX_COMPILER=${CMAKE_CXX_COMPILER}
-    -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
-  DEPENDS
-    oac-tree
-    oac-tree-server
-    sup-gui-core
-    sup-epics
-)
+add_local_module(sup-gui-core
+  DEPENDS sup-gui-extra sup-mvvm sup-dto)
+
+add_local_module(oac-tree-gui
+  DEPENDS oac-tree oac-tree-server sup-gui-core sup-epics)

@@ -6,7 +6,7 @@ option(COA_NO_GUI "Do not build/install oac-tree GUI" OFF)
 
 set(CMAKE_MODULE_PATH ${CMAKE_CURRENT_LIST_DIR}/cmake/module)
 
-include(cmake_functions)
+include(configuration)
 
 add_local_module(sup-dto)
 

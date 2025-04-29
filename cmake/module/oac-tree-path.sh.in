@@ -1,0 +1,1 @@
+echo %DCMAKE_INSTALL_PREFIX%

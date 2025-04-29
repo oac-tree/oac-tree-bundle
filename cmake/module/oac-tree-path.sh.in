@@ -1,1 +1,73 @@
-echo %DCMAKE_INSTALL_PREFIX%
+#!/bin/bash -e
+#
+# Set up environment variables LD_LIBRARY_PATH and PATH for oac-tree
+
+drop_from_path()
+{
+   # Assert that we got enough arguments
+   if test $# -ne 2 ; then
+      echo "drop_from_path: needs 2 arguments"
+      return 1
+   fi
+
+   p=$1
+   drop=$2
+
+   newpath=`echo $p | sed -e "s;:${drop}:;:;g" \
+                          -e "s;:${drop};;g"   \
+                          -e "s;${drop}:;;g"   \
+                          -e "s;${drop};;g"`
+}
+
+new_install_dir=@OAC_TREE_BUNDLE_INSTALL_DIR@
+lib_folder_name=@OAC_TREE_BUNDLE_LIB_DIR@
+bin_folder_name=@OAC_TREE_BUNDLE_BIN_DIR@
+plugin_folder_name=${lib_folder_name}/oac-tree/plugins
+
+if [ -n "${OAC_TREE}" ] ; then
+   old_install_dir=${OAC_TREE}
+fi
+
+OAC_TREE=${new_install_dir}
+
+if [ -n "${old_install_dir}" ] ; then
+   if [ -n "${PATH}" ]; then
+      drop_from_path $PATH ${old_install_dir}/${bin_folder_name}
+      PATH=$newpath
+   fi
+   if [ -n "${LD_LIBRARY_PATH}" ]; then
+      drop_from_path $LD_LIBRARY_PATH ${old_install_dir}/${lib_folder_name}:${old_install_dir}/${plugin_folder_name}
+      LD_LIBRARY_PATH=$newpath
+   fi
+   if [ -n "${DYLD_LIBRARY_PATH}" ]; then
+      drop_from_path $DYLD_LIBRARY_PATH ${old_install_dir}/${lib_folder_name}:${old_install_dir}/${plugin_folder_name}
+      DYLD_LIBRARY_PATH=$newpath
+   fi
+fi
+
+new_bin_dir=${new_install_dir}/${bin_folder_name}
+new_lib_dir=${new_install_dir}/${lib_folder_name}
+new_plugin_dir=${new_install_dir}/${plugin_folder_name}
+
+echo "AA", ${new_lib_dir}
+echo "BB", ${new_bin_dir}
+echo "PATH", $PATH
+
+if [ -z "${PATH}" ]; then
+   PATH=${new_bin_dir}; export PATH
+else
+   PATH=${new_bin_dir}:$PATH; export PATH
+fi
+
+if [ -z "${LD_LIBRARY_PATH}" ]; then
+   LD_LIBRARY_PATH=${new_lib_dir}:${new_plugin_dir}; export LD_LIBRARY_PATH
+else
+   LD_LIBRARY_PATH=${new_lib_dir}:${new_plugin_dir}:$LD_LIBRARY_PATH; export LD_LIBRARY_PATH
+fi
+
+if [ -z "${DYLD_LIBRARY_PATH}" ]; then
+   DYLD_LIBRARY_PATH=${new_lib_dir}:${new_plugin_dir}; export DYLD_LIBRARY_PATH   # Mac OS X
+else
+   DYLD_LIBRARY_PATH=${new_lib_dir}:${new_plugin_dir}:$DYLD_LIBRARY_PATH; export DYLD_LIBRARY_PATH
+fi
+

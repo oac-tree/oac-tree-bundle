@@ -27,7 +27,6 @@ add_local_module(oac-tree
 add_local_module(oac-tree-server
   DEPENDS oac-tree sup-epics)
 
-
 if (NOT COA_NO_PLUGINS)
 add_local_module(oac-tree-control
   DEPENDS oac-tree)

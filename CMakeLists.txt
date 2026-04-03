@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.13...3.31)
-project(oac-tree-bundle VERSION 1.0.0)
+project(oac-tree-bundle VERSION 1.4.0)
 
 option(COA_NO_PLUGINS "Do not build/install oac-tree plugins" OFF)
 option(COA_NO_GUI "Do not build/install oac-tree GUI" OFF)

@@ -1,3 +1,21 @@
+Package versions for 1.4:
+
+- sup-dto: v1.10
+- sup-utils: v1.9
+- sup-di: v1.9
+- sup-protocol: v2.8
+- sup-epics: v1.11
+- sup-mathexpr: v1.5
+- oac-tree: v4.5
+- oac-tree-control: v2.5
+- oac-tree-epics: v4.5
+- oac-tree-mathexpr: v2.5
+- oac-tree-server: v2.5
+- sup-gui-extra: v2.2
+- sup-mvvm: v2.2
+- sup-gui-core: v2.2
+- oac-tree-gui: v2.2
+
 Package versions for 1.3:
 
 - sup-dto: v1.9

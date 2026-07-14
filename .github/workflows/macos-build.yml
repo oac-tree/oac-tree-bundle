@@ -1,0 +1,54 @@
+name: macOS (clang)
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: macos-14
+    env:
+      EPICS_BASE: ${{ github.workspace }}/deps/epics-base
+      PVXS_DIR: ${{ github.workspace }}/deps/pvxs
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: recursive
+
+      - name: System dependencies
+        run: |
+          brew update
+          brew install cmake libxml2 googletest qt@6
+
+      - name: Cache EPICS + PVXS
+        id: epics-cache
+        uses: actions/cache@v4
+        with:
+          path: deps
+          key: epics-macos-base7-pvxs-${{ runner.os }}-v1
+
+      - name: Build EPICS base + PVXS
+        if: steps.epics-cache.outputs.cache-hit != 'true'
+        run: |
+          mkdir -p deps && cd deps
+          git clone --depth 1 https://github.com/epics-base/epics-base.git
+          make -C epics-base -j$(sysctl -n hw.ncpu)
+          git clone --depth 1 https://github.com/mdavidsaver/pvxs.git
+          echo "EPICS_BASE=$EPICS_BASE" > pvxs/configure/RELEASE.local
+          make -C pvxs -j$(sysctl -n hw.ncpu)
+
+      - name: Configure & build bundle
+        run: |
+          export EPICS_HOST_ARCH=$(${EPICS_BASE}/startup/EpicsHostArch)
+          export PATH="$EPICS_BASE/bin/$EPICS_HOST_ARCH:$PVXS_DIR/bin/$EPICS_HOST_ARCH:$PATH"
+          export DYLD_LIBRARY_PATH="$EPICS_BASE/lib/$EPICS_HOST_ARCH:$PVXS_DIR/lib/$EPICS_HOST_ARCH:$DYLD_LIBRARY_PATH"
+          mkdir build && cd build
+          cmake -DCMAKE_PREFIX_PATH="$(brew --prefix qt@6)" \
+                -DCMAKE_INSTALL_PREFIX=$GITHUB_WORKSPACE/install ..
+          make -j$(sysctl -n hw.ncpu)
+          make install
+
+      - name: Test
+        working-directory: build
+        env:
+          QT_QPA_PLATFORM: offscreen
+        run: ctest --output-on-failure -j$(sysctl -n hw.ncpu)

@@ -1,7 +1,7 @@
 # oac-tree-bundle
 
-[![Linux](https://github.com/oac-tree/oac-tree-bundle/actions/workflows/linux-build.yml/badge.svg)](https://github.com/oac-tree/oac-tree-bundle/actions/workflows/linux-build.yml)
-[![macOS](https://github.com/oac-tree/oac-tree-bundle/actions/workflows/macos-build.yml/badge.svg)](https://github.com/oac-tree/oac-tree-bundle/actions/workflows/macos-build.yml)
+[![Linux](../../actions/workflows/linux-build.yml/badge.svg)](../../actions/workflows/linux-build.yml)
+[![macOS](../../actions/workflows/macos-build.yml/badge.svg)](../../actions/workflows/macos-build.yml)
 
 Super build for all `oac-tree` packages.
 

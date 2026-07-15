@@ -45,8 +45,31 @@ jobs:
           export EPICS_HOST_ARCH=$(${EPICS_BASE}/startup/EpicsHostArch)
           export PATH="$EPICS_BASE/bin/$EPICS_HOST_ARCH:$PVXS_DIR/bin/$EPICS_HOST_ARCH:$PATH"
           export LD_LIBRARY_PATH="$EPICS_BASE/lib/$EPICS_HOST_ARCH:$PVXS_DIR/lib/$EPICS_HOST_ARCH:$LD_LIBRARY_PATH"
-          # Keep linked plugin libraries so their self-registration runs (Ubuntu's default --as-needed would otherwise drop them).
+          # EXCEPTION: Keep linked plugin libraries so their self-registration runs (Ubuntu's default --as-needed would otherwise drop them).
           export LDFLAGS="-Wl,--no-as-needed${LDFLAGS:+ $LDFLAGS}"
           mkdir build && cd build
           cmake -DCMAKE_INSTALL_PREFIX=$GITHUB_WORKSPACE/install ..
           make -j$(nproc)
+
+      - name: Test
+        env:
+          QT_QPA_PLATFORM: offscreen
+          # EXCEPTION: EPICS CA/PVA discovery defaults to UDP broadcast, which
+          # CI runners block; pin to loopback so in-process IOC tests can connect.
+          EPICS_CA_AUTO_ADDR_LIST: "NO"
+          EPICS_CA_ADDR_LIST: "127.0.0.1"
+          EPICS_PVA_AUTO_ADDR_LIST: "NO"
+          EPICS_PVA_ADDR_LIST: "127.0.0.1"
+        run: |
+          export EPICS_HOST_ARCH=$(${EPICS_BASE}/startup/EpicsHostArch)
+          export LD_LIBRARY_PATH="$GITHUB_WORKSPACE/install/lib:$GITHUB_WORKSPACE/install/lib64:$GITHUB_WORKSPACE/install/lib/oac-tree/plugins:$EPICS_BASE/lib/$EPICS_HOST_ARCH:$PVXS_DIR/lib/$EPICS_HOST_ARCH:$LD_LIBRARY_PATH"
+          source "$GITHUB_WORKSPACE/install/bin/oac-tree-path.sh" 2>/dev/null || true
+          # EXCEPTION: Skip a GUI test that segfaults under the offscreen Qt platform.
+          exclude='ChartViewTest.PressSpacebarClickMouseAndMove'
+          rc=0
+          for d in build/*-prefix/src/*-build; do
+            echo "::group::ctest $d"
+            ctest --test-dir "$d" --output-on-failure --no-tests=ignore -E "$exclude" -j"$(nproc)" || rc=1
+            echo "::endgroup::"
+          done
+          exit $rc

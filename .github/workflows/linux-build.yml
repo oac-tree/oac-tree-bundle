@@ -1,0 +1,52 @@
+name: Linux (Ubuntu LTS / gcc)
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-24.04
+    env:
+      EPICS_BASE: ${{ github.workspace }}/deps/epics-base
+      PVXS_DIR: ${{ github.workspace }}/deps/pvxs
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          submodules: recursive
+
+      - name: System dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y build-essential cmake libxml2-dev \
+            libgtest-dev libgmock-dev libevent-dev \
+            qt6-base-dev qt6-tools-dev qt6-tools-dev-tools \
+            libqt6svg6-dev libqt6charts6-dev \
+            libx11-xcb1 libxkbcommon-dev
+
+      - name: Cache EPICS + PVXS
+        id: epics-cache
+        uses: actions/cache@v5
+        with:
+          path: deps
+          key: epics-linux-base7-pvxs-${{ runner.os }}-v2
+
+      - name: Build EPICS base + PVXS
+        if: steps.epics-cache.outputs.cache-hit != 'true'
+        run: |
+          mkdir -p deps && cd deps
+          git clone --depth 1 https://github.com/epics-base/epics-base.git
+          make -C epics-base -j$(nproc)
+          git clone --depth 1 https://github.com/mdavidsaver/pvxs.git
+          echo "EPICS_BASE=$EPICS_BASE" > pvxs/configure/RELEASE.local
+          make -C pvxs -j$(nproc)
+
+      - name: Configure & build bundle
+        run: |
+          export EPICS_HOST_ARCH=$(${EPICS_BASE}/startup/EpicsHostArch)
+          export PATH="$EPICS_BASE/bin/$EPICS_HOST_ARCH:$PVXS_DIR/bin/$EPICS_HOST_ARCH:$PATH"
+          export LD_LIBRARY_PATH="$EPICS_BASE/lib/$EPICS_HOST_ARCH:$PVXS_DIR/lib/$EPICS_HOST_ARCH:$LD_LIBRARY_PATH"
+          # Keep linked plugin libraries so their self-registration runs (Ubuntu's default --as-needed would otherwise drop them).
+          export LDFLAGS="-Wl,--no-as-needed${LDFLAGS:+ $LDFLAGS}"
+          mkdir build && cd build
+          cmake -DCMAKE_INSTALL_PREFIX=$GITHUB_WORKSPACE/install ..
+          make -j$(nproc)

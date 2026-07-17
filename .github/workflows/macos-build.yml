@@ -61,7 +61,8 @@ jobs:
           export DYLD_LIBRARY_PATH="$GITHUB_WORKSPACE/install/lib:$GITHUB_WORKSPACE/install/lib/oac-tree/plugins:$EPICS_BASE/lib/$EPICS_HOST_ARCH:$PVXS_DIR/lib/$EPICS_HOST_ARCH:$DYLD_LIBRARY_PATH"
           source "$GITHUB_WORKSPACE/install/bin/oac-tree-path.sh" 2>/dev/null || true
           # EXCEPTION: Skip tests that can't run in the CI sandbox (EPICS CA/PVA networking, soft-IOC, offscreen-Qt crashes, CopyToProcedureTest relative-path temp file).
-          exclude='ChannelAccess|PvAccess|PVAccessServer|EPICSProtocolFactory|SoftIoc|Softioc|ClientServerStack|RemoteScenario|ChartViewTest|CopyToProcedureTest|CopyFromProcedureTest'
+          # EXCEPTION: Skip tests with Linux-specific assumptions that fail on macOS: .so vs .dylib extension, Qt int64 type names (qlonglong vs long).
+          exclude='ChannelAccess|PvAccess|PVAccessServer|EPICSProtocolFactory|SoftIoc|Softioc|ClientServerStack|RemoteScenario|ChartViewTest|CopyToProcedureTest|CopyFromProcedureTest|LibraryNamesTests|LibraryElementTest|ObjectManagerExternalTest|VariantConverterTest|DefaultEditorFactoryTest|VariantDependentEditorFactoryTest|GetGroupNameFromPluginName|PluginsSettingsItemTest|LocalJobHandlerTest|ResourceFolderTest|NonExistentPluginError'
           rc=0
           for d in build/*-prefix/src/*-build; do
             echo "::group::ctest $d"

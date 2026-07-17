@@ -14,10 +14,13 @@ jobs:
         with:
           submodules: recursive
 
+      - name: Point submodules to latest develop
+        run: git submodule foreach 'git fetch origin develop && git checkout develop && git reset --hard origin/develop'
+
       - name: System dependencies
         run: |
           brew update
-          brew install cmake libxml2 googletest libevent qt@6
+          brew install cmake libxml2 googletest libevent asio qt@6
 
       - name: Cache EPICS + PVXS
         id: epics-cache

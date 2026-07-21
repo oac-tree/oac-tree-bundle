@@ -49,3 +49,6 @@ jobs:
           cmake -DCMAKE_PREFIX_PATH="$(brew --prefix qt@6)" \
                 -DCMAKE_INSTALL_PREFIX=$GITHUB_WORKSPACE/install ..
           make -j$(sysctl -n hw.ncpu)
+
+      - name: Smoke test (network-free)
+        run: bash .github/smoke/smoke-test.sh

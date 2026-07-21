@@ -48,8 +48,11 @@ jobs:
           export EPICS_HOST_ARCH=$(${EPICS_BASE}/startup/EpicsHostArch)
           export PATH="$EPICS_BASE/bin/$EPICS_HOST_ARCH:$PVXS_DIR/bin/$EPICS_HOST_ARCH:$PATH"
           export LD_LIBRARY_PATH="$EPICS_BASE/lib/$EPICS_HOST_ARCH:$PVXS_DIR/lib/$EPICS_HOST_ARCH:$LD_LIBRARY_PATH"
-          # Keep linked plugin libraries so their self-registration runs (Ubuntu's default --as-needed would otherwise drop them).
+          # EXCEPTION: Keep linked plugin libraries so their self-registration runs (Ubuntu's default --as-needed would otherwise drop them).
           export LDFLAGS="-Wl,--no-as-needed${LDFLAGS:+ $LDFLAGS}"
           mkdir build && cd build
           cmake -DCMAKE_INSTALL_PREFIX=$GITHUB_WORKSPACE/install ..
           make -j$(nproc)
+
+      - name: Smoke test (network-free)
+        run: bash .github/smoke/smoke-test.sh

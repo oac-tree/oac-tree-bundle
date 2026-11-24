@@ -12,6 +12,8 @@ Super build for all `oac-tree` packages.
 
 ## Build from source
 
+Will build the latest release of the bundle.
+
 ```bash
 git clone https://github.com/oac-tree/oac-tree-bundle.git
 cd oac-tree-bundle
@@ -21,11 +23,12 @@ cmake --install build
 source <INSTALL_PREFIX>/bin/oac-tree-path.sh
 ```
 
-Modules are cloned from GitHub during the build. They are built for `<INSTALL_PREFIX>` and
-staged in `build/stage`. `cmake --install` copies them to `<INSTALL_PREFIX>`. Set the
-prefix at configure time: some modules compile it in.
+Modules are cloned from GitHub and built during `cmake --build`. Each one is installed into
+`build/stage/<INSTALL_PREFIX>`, where the next modules find it. `cmake --install` copies
+that tree to `<INSTALL_PREFIX>`. Set `CMAKE_INSTALL_PREFIX` at configure time: some modules
+compile the install path in.
 
-### Module versions
+### Build different versions of the bundle
 
 The `versions/` directory holds one file per bundle release, plus `develop.cmake` for the
 development branches. Each file gives the git tag or branch of every module.

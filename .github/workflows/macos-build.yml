@@ -2,20 +2,21 @@ name: macOS (clang)
 
 on:
   workflow_dispatch:
+    inputs:
+      versions:
+        description: "Module versions: develop, or a release such as 1.6"
+        required: true
+        default: develop
 
 jobs:
   build:
     runs-on: macos-15
     env:
+      OAC_TREE_VERSIONS: ${{ inputs.versions }}
       EPICS_BASE: ${{ github.workspace }}/deps/epics-base
       PVXS_DIR: ${{ github.workspace }}/deps/pvxs
     steps:
       - uses: actions/checkout@v5
-        with:
-          submodules: recursive
-
-      - name: Point submodules to latest develop
-        run: git submodule foreach 'git fetch origin develop && git checkout develop && git reset --hard origin/develop'
 
       - name: System dependencies
         run: |
@@ -40,12 +41,13 @@ jobs:
           export LIBEVENT=$(brew --prefix)
           make -C pvxs -j$(sysctl -n hw.ncpu)
 
-      - name: Configure & build bundle
+      - name: Configure, build & install bundle
         run: |
           export EPICS_HOST_ARCH=$(${EPICS_BASE}/startup/EpicsHostArch)
           export PATH="$EPICS_BASE/bin/$EPICS_HOST_ARCH:$PVXS_DIR/bin/$EPICS_HOST_ARCH:$PATH"
           export DYLD_LIBRARY_PATH="$EPICS_BASE/lib/$EPICS_HOST_ARCH:$PVXS_DIR/lib/$EPICS_HOST_ARCH:$DYLD_LIBRARY_PATH"
-          mkdir build && cd build
-          cmake -DCMAKE_PREFIX_PATH="$(brew --prefix qt@6)" \
-                -DCMAKE_INSTALL_PREFIX=$GITHUB_WORKSPACE/install ..
-          make -j$(sysctl -n hw.ncpu)
+          cmake -S . -B build -DOAC_TREE_VERSIONS="$OAC_TREE_VERSIONS" \
+                -DCMAKE_PREFIX_PATH="$(brew --prefix qt@6)" \
+                -DCMAKE_INSTALL_PREFIX=$GITHUB_WORKSPACE/install
+          cmake --build build -j$(sysctl -n hw.ncpu)
+          cmake --install build

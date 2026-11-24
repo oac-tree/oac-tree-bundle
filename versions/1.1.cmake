@@ -1,0 +1,17 @@
+# Module versions: Release 1.1.
+
+oac_tree_module(sup-dto           v1.7)
+oac_tree_module(sup-utils         v1.6)
+oac_tree_module(sup-di            v1.6)
+oac_tree_module(sup-protocol      v2.5)
+oac_tree_module(sup-epics         v1.8)
+oac_tree_module(sup-mathexpr      v1.3)
+oac_tree_module(oac-tree          v4.2)
+oac_tree_module(oac-tree-control  v2.2)
+oac_tree_module(oac-tree-epics    v4.2)
+oac_tree_module(oac-tree-mathexpr v2.2)
+oac_tree_module(oac-tree-server   v2.2)
+oac_tree_module(sup-gui-extra     v1.9)
+oac_tree_module(sup-mvvm          v1.9)
+oac_tree_module(sup-gui-core      v1.9)
+oac_tree_module(oac-tree-gui      v1.9)

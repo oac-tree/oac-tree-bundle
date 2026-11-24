@@ -1,0 +1,17 @@
+# Module versions: Development branches.
+
+oac_tree_module(sup-dto           develop)
+oac_tree_module(sup-utils         develop)
+oac_tree_module(sup-di            develop)
+oac_tree_module(sup-protocol      develop)
+oac_tree_module(sup-epics         develop)
+oac_tree_module(sup-mathexpr      develop)
+oac_tree_module(oac-tree          develop)
+oac_tree_module(oac-tree-control  develop)
+oac_tree_module(oac-tree-epics    develop)
+oac_tree_module(oac-tree-mathexpr develop)
+oac_tree_module(oac-tree-server   develop)
+oac_tree_module(sup-gui-extra     develop)
+oac_tree_module(sup-mvvm          develop)
+oac_tree_module(sup-gui-core      develop)
+oac_tree_module(oac-tree-gui      develop)

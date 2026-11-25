@@ -10,6 +10,12 @@ Super build for all `oac-tree` packages.
 `epics-base` and `pvxs` (with the `EPICS_BASE` and `PVXS_DIR` environment variables set),
 `cmake`, `git`, `libxml2`, `gtest`, `libevent` and, for the GUI, `qt6`.
 
+## If you have used this bundle repo before
+
+The previous version (before November 2026) was based on Git submodules. 
+To avoid any issues caused by submodule quirks, simply clone this bundle 
+again and follow the instructions below.
+
 ## Build from source
 
 Will build the latest release of the bundle.

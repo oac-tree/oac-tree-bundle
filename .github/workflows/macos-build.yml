@@ -51,3 +51,6 @@ jobs:
                 -DCMAKE_INSTALL_PREFIX=$GITHUB_WORKSPACE/install
           cmake --build build -j$(sysctl -n hw.ncpu)
           cmake --install build
+
+      - name: Smoke test
+        run: bash .github/smoke/smoke-test.sh
